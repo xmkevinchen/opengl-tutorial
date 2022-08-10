@@ -1,3 +1,4 @@
+#include <GL/glew.h> // include GLEW and new version of GL on Windows
 #include <GLFW/glfw3.h> // GLFW helper library for window management
 #include <iostream> //for cout
 
@@ -12,7 +13,7 @@ int main (int argc, char** argv)
 
   //Setting window properties
   glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 2);
+  glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -25,6 +26,10 @@ int main (int argc, char** argv)
       return 1;
     }
   glfwMakeContextCurrent (window);
+
+// start GLEW extension handler
+  glewExperimental = GL_TRUE;
+  glewInit ();
 
   // get version info
   const GLubyte* renderer = glGetString (GL_RENDERER); // get renderer string

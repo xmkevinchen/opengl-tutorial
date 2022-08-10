@@ -20,6 +20,7 @@
                 "-I${workspaceFolder}/libs",
                 "-L${workspaceFolder}/libs",
                 "${workspaceFolder}/libs/libglfw3.a",
+                "${workspaceFolder}/libs/libGLEW.a",
                 "${file}",
                 "-o",
                 "${workspaceFolder}/build/${fileBasenameNoExtension}/${fileBasenameNoExtension}",

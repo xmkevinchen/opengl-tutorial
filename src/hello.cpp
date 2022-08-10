@@ -1,3 +1,4 @@
+#include <GL/glew.h> // Need to before glfw3.h
 #include <GLFW/glfw3.h>
 
 int main(void)
@@ -18,6 +19,10 @@ int main(void)
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
+
+    // start GLEW extension handler
+    glewExperimental = GL_TRUE;
+    glewInit ();
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
