@@ -29,7 +29,10 @@ int main (int argc, char** argv)
 
 // start GLEW extension handler
   glewExperimental = GL_TRUE;
-  glewInit ();
+  if (glewInit() != GLEW_OK) {
+    std::cerr<<"ERROR: could not initial glew" << std::endl;
+    return -1;
+  }
 
   // get version info
   const GLubyte* renderer = glGetString (GL_RENDERER); // get renderer string
