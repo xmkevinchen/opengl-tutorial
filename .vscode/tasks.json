@@ -13,6 +13,7 @@
             ],
             "command": "/usr/bin/clang++",
             "args": [
+                "-std=c++17",
                 "-fdiagnostics-color=always",
                 "-DGL_SILENCE_DEPRECATION",
                 "-Wall",

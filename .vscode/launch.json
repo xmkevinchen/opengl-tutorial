@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/build/${fileBasenameNoExtension}/${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb",
