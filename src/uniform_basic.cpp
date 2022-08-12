@@ -110,12 +110,14 @@ int main(void)
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 640, "Index Buffer", NULL, NULL);
+    window = glfwCreateWindow(640, 640, "Uniform Basic", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
         return -1;
     }
+
+    glfwSwapInterval(1);
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
@@ -157,20 +159,36 @@ int main(void)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
-    ShaderProgramSource source = ParseShader("res/shaders/basic.shader");
+    ShaderProgramSource source = ParseShader("res/shaders/basic-uniform.shader");
     std::cout << source.vertex << std::endl;
     std::cout << source.fragment << std::endl;
 
     unsigned int shader = CreateShader(source.vertex, source.fragment);
     glUseProgram(shader);
 
+    int location = glGetUniformLocation(shader, "u_Color");
+    assert(location != -1);
+
+    float red = 0.0f;
+    float increment = 0.05f;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glUniform4f(location, red, 0.3f, 0.8f, 1.0f);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+        red += increment;
+        if (red > 1.0f)
+        {
+            increment = -0.05;
+        }
+        else if (red < 0.0f)
+        {
+            increment = 0.05;
+        }
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

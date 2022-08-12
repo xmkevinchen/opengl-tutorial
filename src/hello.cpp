@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    GLFWwindow* window;
+    GLFWwindow *window;
 
     /* Initialize the library */
     if (!glfwInit())
@@ -22,7 +22,7 @@ int main(void)
 
     // start GLEW extension handler
     glewExperimental = GL_TRUE;
-    glewInit ();
+    glewInit();
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -32,8 +32,8 @@ int main(void)
 
         glBegin(GL_TRIANGLES);
         glVertex2f(-0.5f, -0.5f);
-        glVertex2f( 0.0f,  0.5f);
-        glVertex2f( 0.5f, -0.5f);
+        glVertex2f(0.0f, 0.5f);
+        glVertex2f(0.5f, -0.5f);
         glEnd();
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
