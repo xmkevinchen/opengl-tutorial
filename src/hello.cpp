@@ -1,5 +1,6 @@
 #include <GL/glew.h> // Need to before glfw3.h
 #include <GLFW/glfw3.h>
+#include "common/Renderer.h"
 
 int main(void)
 {
@@ -28,18 +29,18 @@ int main(void)
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
-        glBegin(GL_TRIANGLES);
-        glVertex2f(-0.5f, -0.5f);
-        glVertex2f(0.0f, 0.5f);
-        glVertex2f(0.5f, -0.5f);
-        glEnd();
+        GLCall(glBegin(GL_TRIANGLES));
+        GLCall(glVertex2f(-0.5f, -0.5f));
+        GLCall(glVertex2f(0.0f, 0.5f));
+        GLCall(glVertex2f(0.5f, -0.5f));
+        GLCall(glEnd());
         /* Swap front and back buffers */
-        glfwSwapBuffers(window);
+        GLCall(glfwSwapBuffers(window));
 
         /* Poll for and process events */
-        glfwPollEvents();
+        GLCall(glfwPollEvents());
     }
 
     glfwTerminate();
