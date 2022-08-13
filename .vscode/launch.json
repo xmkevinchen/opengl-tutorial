@@ -8,7 +8,7 @@
             "name": "Application - Build and debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Application",
+            "program": "${workspaceFolder}/build/Application/Application",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

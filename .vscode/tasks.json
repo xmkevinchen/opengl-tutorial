@@ -63,7 +63,7 @@
                 "${workspaceFolder}/src/Application.cpp",
                 "${workspaceFolder}/src/classes/**/*.cpp",
                 "-o",
-                "${workspaceFolder}/build/Application",
+                "${workspaceFolder}/build/Application/Application",
                 "-framework",
                 "OpenGL",
                 "-framework",
