@@ -2,6 +2,12 @@
 
 This is a VS Code workspace on macOS for [YouTube OpenGL Tutorial](https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2).
 
+## Environment
+
+-   [Visual Studio Code](https://code.visualstudio.com/)
+-   [VSCode C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+-   Xcode
+
 ## Build glew macOS universal library
 
 ```
@@ -14,8 +20,9 @@ make SYSTEM=darwin-universal
 ```
 
 After building the libraries
-- Copy the header files from `include` folder
-- Copy the library files from `lib` folder (Here, I use the static library)
+
+-   Copy the header files from `include` folder
+-   Copy the library files from `lib` folder (Here, I use the static library)
 
 ```
 file lib/libGLEW.a
@@ -26,5 +33,5 @@ lib/libGLEW.a (for architecture arm64):	current ar archive random library
 
 ## glfw universal library
 
-- Download macOS pre-compiled binaries from [GLFW website](https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.bin.MACOS.zip)
-- Copy the library from the unzip file
+-   Download macOS pre-compiled binaries from [GLFW website](https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.bin.MACOS.zip)
+-   Copy the library from the unzip file
