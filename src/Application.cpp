@@ -9,6 +9,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+#include "VertexBufferLayout.h"
 #include "Shader.h"
 
 int main(void)
@@ -76,7 +77,8 @@ int main(void)
 
     Shader shader("res/shaders/basic-uniform.shader");
     shader.bind();
-    shader.setUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+
+    Renderer renderer;
 
     float red = 0.0f;
     float increment = 0.05f;
@@ -85,10 +87,10 @@ int main(void)
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
-        GLCall(glClear(GL_COLOR_BUFFER_BIT));
-
+        renderer.clear();
         shader.setUniform4f("u_Color", red, 0.3f, 0.8f, 1.0f);
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+
+        renderer.draw(va, ib, shader);
 
         red += increment;
         if (red > 1.0f)
