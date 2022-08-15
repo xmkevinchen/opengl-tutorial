@@ -11,6 +11,7 @@
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
 #include "Shader.h"
+#include "Texture.h"
 
 int main(void)
 {
@@ -31,7 +32,7 @@ int main(void)
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 640, "OpenGL Application", NULL, NULL);
+    window = glfwCreateWindow(512, 512, "OpenGL Application", NULL, NULL);
     if (!window)
     {
         GLCall(glfwTerminate());
@@ -52,10 +53,10 @@ int main(void)
     }
 
     float positions[] = {
-        -0.5f, -0.5f, // 0
-        0.5f, -0.5f,  // 1
-        0.5f, 0.5f,   // 2
-        -0.5f, 0.5f,  // 3
+        -0.5f, -0.5f, 0.0f, 0.0f, // 0
+         0.5f, -0.5f, 1.0f, 0.0f, // 1
+         0.5f, 0.5f,  1.0f, 1.0f, // 2
+        -0.5f, 0.5f,  0.0f, 1.0f, // 3
     };
 
     unsigned int indices[] = {
@@ -63,20 +64,25 @@ int main(void)
         2, 3, 0, // 1
     };
 
-    unsigned int VAO;
-    GLCall(glGenVertexArrays(1, &VAO));
-    GLCall(glBindVertexArray(VAO));
+    GLCall(glEnable(GL_BLEND));
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
     VertexArray va;
-    VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+    VertexBuffer vb(positions, 4 * 4 * sizeof(float));
     VertexBufferLayout layout;
+    layout.push<float>(2);
     layout.push<float>(2);
     va.addBuffer(vb, layout);
 
     IndexBuffer ib(indices, 6);
 
-    Shader shader("res/shaders/basic-uniform.shader");
+    // Shader shader("res/shaders/basic-uniform.shader");
+    Shader shader("res/shaders/texture-basic.shader");
     shader.bind();
+
+    Texture texture("res/textures/opengl.png");
+    texture.bind();
+    shader.setUniform1i("u_Texture", 0);
 
     Renderer renderer;
 

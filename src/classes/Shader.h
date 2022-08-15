@@ -22,10 +22,12 @@ public:
     void bind() const;
     void unbind() const;
 
+    void setUniform1i(const std::string &name, int value);
+    void setUniform1f(const std::string &name, float value);
     void setUniform4f(const std::string &name, float v0, float v1, float v2, float v3);
 
 private:
-    unsigned int getUniformLocation(const std::string &name);
+    int getUniformLocation(const std::string &name);
     unsigned int compile(unsigned int type,
                          const std::string &source);
     unsigned int create(const std::string &vertexShader,
