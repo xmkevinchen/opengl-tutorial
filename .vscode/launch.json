@@ -28,7 +28,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb",
-            "preLaunchTask": "${defaultBuildTask}"
+            "preLaunchTask": "build-active-cpp"
         }
     ]
 }
