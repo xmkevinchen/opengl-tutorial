@@ -1,6 +1,6 @@
 #include <GL/glew.h> // Need to before glfw3.h
 #include <GLFW/glfw3.h>
-#include "common/Renderer.h"
+#include "Renderer.h"
 
 int main(void)
 {

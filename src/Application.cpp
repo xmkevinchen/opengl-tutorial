@@ -5,11 +5,11 @@
 #include <string>
 #include <sstream>
 
-#include "common/Renderer.h"
-#include "common/VertexBuffer.h"
-#include "common/IndexBuffer.h"
-#include "common/VertexArray.h"
-#include "common/Shader.h"
+#include "Renderer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexArray.h"
+#include "Shader.h"
 
 int main(void)
 {
