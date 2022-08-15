@@ -13,6 +13,9 @@
 #include "Shader.h"
 #include "Texture.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 int main(void)
 {
     GLFWwindow *window;
@@ -32,7 +35,7 @@ int main(void)
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(512, 512, "OpenGL Application", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "OpenGL Application", NULL, NULL);
     if (!window)
     {
         GLCall(glfwTerminate());
@@ -55,8 +58,8 @@ int main(void)
     float positions[] = {
         -0.5f, -0.5f, 0.0f, 0.0f, // 0
          0.5f, -0.5f, 1.0f, 0.0f, // 1
-         0.5f, 0.5f,  1.0f, 1.0f, // 2
-        -0.5f, 0.5f,  0.0f, 1.0f, // 3
+         0.5f,  0.5f, 1.0f, 1.0f, // 2
+        -0.5f,  0.5f, 0.0f, 1.0f, // 3
     };
 
     unsigned int indices[] = {
@@ -76,9 +79,12 @@ int main(void)
 
     IndexBuffer ib(indices, 6);
 
+    glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
     // Shader shader("res/shaders/basic-uniform.shader");
     Shader shader("res/shaders/texture-basic.shader");
     shader.bind();
+    shader.setUniformMat4f("u_MVP", proj);
 
     Texture texture("res/textures/opengl.png");
     texture.bind();
@@ -86,27 +92,27 @@ int main(void)
 
     Renderer renderer;
 
-    float red = 0.0f;
-    float increment = 0.05f;
+    // float red = 0.0f;
+    // float increment = 0.05f;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         renderer.clear();
-        shader.setUniform4f("u_Color", red, 0.3f, 0.8f, 1.0f);
+        // shader.setUniform4f("u_Color", red, 0.3f, 0.8f, 1.0f);
 
         renderer.draw(va, ib, shader);
 
-        red += increment;
-        if (red > 1.0f)
-        {
-            increment = -0.05;
-        }
-        else if (red < 0.0f)
-        {
-            increment = 0.05;
-        }
+        // red += increment;
+        // if (red > 1.0f)
+        // {
+        //     increment = -0.05;
+        // }
+        // else if (red < 0.0f)
+        // {
+        //     increment = 0.05;
+        // }
 
         /* Swap front and back buffers */
         GLCall(glfwSwapBuffers(window));
