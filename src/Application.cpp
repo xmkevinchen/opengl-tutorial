@@ -20,6 +20,8 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 
+#include "TestClearColor.h"
+
 int main(void)
 {
     GLFWwindow *window;
@@ -61,42 +63,6 @@ int main(void)
         return -1;
     }
 
-    float positions[] = {
-        -50.0f, -50.0f, 0.0f, 0.0f, // 0
-        50.0f, -50.0f, 1.0f, 0.0f,  // 1
-        50.0f, 50.0f, 1.0f, 1.0f,   // 2
-        -50.0f, 50.0f, 0.0f, 1.0f,  // 3
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2, // 0
-        2, 3, 0, // 1
-    };
-
-    GLCall(glEnable(GL_BLEND));
-    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-
-    VertexArray va;
-    VertexBuffer vb(positions, 4 * 4 * sizeof(float));
-    VertexBufferLayout layout;
-    layout.push<float>(2);
-    layout.push<float>(2);
-    va.addBuffer(vb, layout);
-
-    IndexBuffer ib(indices, 6);
-
-    glm::mat4 proj = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-
-    // Shader shader("res/shaders/basic-uniform.shader");
-
-    Texture texture("res/textures/opengl.png");
-    texture.bind();
-
-    Shader shader("res/shaders/texture-basic.shader");
-    shader.bind();
-    shader.setUniform1i("u_Texture", 0);
-
     Renderer renderer;
 
     ImGui::CreateContext();
@@ -104,62 +70,26 @@ int main(void)
     ImGui_ImplOpenGL3_Init();
     ImGui::StyleColorsDark();
 
-    // float red = 0.0f;
-    // float increment = 0.05f;
-    glm::vec3 translationA(200, 200, 0);
-    glm::vec3 translationB(400, 200, 0);
-    /* Loop until the user closes the window */
+    test::TestClearColor test;
+
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         renderer.clear();
+
+        test.onUpdate(0);
+        test.onRender();
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
-            glm::mat4 mvp = proj * view * model;
-
-            shader.bind();
-            shader.setUniformMat4f("u_MVP", mvp);
-            renderer.draw(va, ib, shader);
-        }
-
-        {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
-            glm::mat4 mvp = proj * view * model;
-
-            shader.bind();
-            shader.setUniformMat4f("u_MVP", mvp);
-            renderer.draw(va, ib, shader);
-        }
-        // red += increment;
-        // if (red > 1.0f)
-        // {
-        //     increment = -0.05;
-        // }
-        // else if (red < 0.0f)
-        // {
-        //     increment = 0.05;
-        // }
-
-        {
-            ImGui::Begin("Debugging"); // Create a window called "Hello, world!" and append into it.
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-            ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, width);
-            ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, width);
-            ImGui::End();
-        }
+        test.onImGuiRender();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        /* Swap front and back buffers */
         GLCall(glfwSwapBuffers(window));
-
-        /* Poll for and process events */
         GLCall(glfwPollEvents());
     }
 
