@@ -70,27 +70,48 @@ int main(void)
     ImGui_ImplOpenGL3_Init();
     ImGui::StyleColorsDark();
 
+    test::Test *currentTest = nullptr;
+    test::Menu *menu = new test::Menu(currentTest);
+    currentTest = menu;
+
+    menu->registerTest<test::TestClearColor>("Clear Color");
+
     test::TestClearColor test;
 
     while (!glfwWindowShouldClose(window))
     {
-        /* Render here */
+        GLCall(glClearColor(0.0, 0.0, 0.0, 1.0f));
+
         renderer.clear();
 
-        test.onUpdate(0);
-        test.onRender();
-
-        // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        test.onImGuiRender();
+        if (currentTest)
+        {
+            currentTest->onUpdate(0.0f);
+            currentTest->onRender();
+            ImGui::Begin("Test");
+            if (currentTest != menu && ImGui::Button("<-"))
+            {
+                delete currentTest;
+                currentTest = menu;
+            }
+            currentTest->onImGuiRender();
+            ImGui::End();
+        }
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         GLCall(glfwSwapBuffers(window));
         GLCall(glfwPollEvents());
+    }
+
+    delete currentTest;
+    if (currentTest != menu)
+    {
+        delete menu;
     }
 
     // Cleanup
