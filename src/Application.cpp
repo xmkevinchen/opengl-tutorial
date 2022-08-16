@@ -62,10 +62,10 @@ int main(void)
     }
 
     float positions[] = {
-        100.0f, 100.0f, 0.0f, 0.0f, // 0
-        200.0f, 100.0f, 1.0f, 0.0f, // 1
-        200.0f, 200.0f, 1.0f, 1.0f, // 2
-        100.0f, 200.0f, 0.0f, 1.0f, // 3
+        -50.0f, -50.0f, 0.0f, 0.0f, // 0
+        50.0f, -50.0f, 1.0f, 0.0f,  // 1
+        50.0f, 50.0f, 1.0f, 1.0f,   // 2
+        -50.0f, 50.0f, 0.0f, 1.0f,  // 3
     };
 
     unsigned int indices[] = {
@@ -86,16 +86,15 @@ int main(void)
     IndexBuffer ib(indices, 6);
 
     glm::mat4 proj = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f, 0.0f, 0.0f));
-
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
     // Shader shader("res/shaders/basic-uniform.shader");
-    Shader shader("res/shaders/texture-basic.shader");
-    shader.bind();
-
 
     Texture texture("res/textures/opengl.png");
     texture.bind();
+
+    Shader shader("res/shaders/texture-basic.shader");
+    shader.bind();
     shader.setUniform1i("u_Texture", 0);
 
     Renderer renderer;
@@ -107,26 +106,36 @@ int main(void)
 
     // float red = 0.0f;
     // float increment = 0.05f;
-    glm::vec3 translation(200, 200, 0);
+    glm::vec3 translationA(200, 200, 0);
+    glm::vec3 translationB(400, 200, 0);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         renderer.clear();
-        // shader.setUniform4f("u_Color", red, 0.3f, 0.8f, 1.0f);
 
-        glfwPollEvents();
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
-        glm::mat4 mvp = proj * view * model;
-        shader.setUniformMat4f("u_MVP", mvp);
+        {
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
+            glm::mat4 mvp = proj * view * model;
 
-        renderer.draw(va, ib, shader);
+            shader.bind();
+            shader.setUniformMat4f("u_MVP", mvp);
+            renderer.draw(va, ib, shader);
+        }
 
+        {
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
+            glm::mat4 mvp = proj * view * model;
+
+            shader.bind();
+            shader.setUniformMat4f("u_MVP", mvp);
+            renderer.draw(va, ib, shader);
+        }
         // red += increment;
         // if (red > 1.0f)
         // {
@@ -140,8 +149,8 @@ int main(void)
         {
             ImGui::Begin("Debugging"); // Create a window called "Hello, world!" and append into it.
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-            ImGui::SliderFloat("Translation.x", &translation.x, 0.0f, width);
-            ImGui::SliderFloat("Translation.y", &translation.y, 0.0f, height);
+            ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, width);
+            ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, width);
             ImGui::End();
         }
 
