@@ -21,6 +21,7 @@
 #include <imgui/imgui_impl_opengl3.h>
 
 #include "TestClearColor.h"
+#include "TestTexture2D.h"
 
 int main(void)
 {
@@ -75,6 +76,7 @@ int main(void)
     currentTest = menu;
 
     menu->registerTest<test::TestClearColor>("Clear Color");
+    menu->registerTest<test::TestTexture2D>("Texture 2D");
 
     test::TestClearColor test;
 
